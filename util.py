@@ -44,7 +44,7 @@ def videoWrite(f_list, out_path = "./output.avi", fps = 30.):
     img = f_list[0]
     h, w = img.shape[0], img.shape[1]
     cap = cv2.VideoCapture(0)
-    fourcc = cv2.cv.CV_FOURCC(*'XVID') if cv2.__version__[0] == '2' else cv2.VideoWriter_fourcc(*'XVID')
+    fourcc = cv2.VideoWriter_fourcc(*'MP4V')
     out = cv2.VideoWriter(out_path ,fourcc, fps, (w,h))
     for img in f_list:
         out.write(img)

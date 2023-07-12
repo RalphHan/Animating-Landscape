@@ -139,7 +139,7 @@ class TrainAnimatingLandscape():
                     
                     "====Reconstruction loss===="
                     flow = flow + initial_flow
-                    y = F.grid_sample(frame1, flow.permute(0,2,3,1), padding_mode="border")
+                    y = F.grid_sample(frame1, flow.permute(0,2,3,1), padding_mode="border",align_corners=True)
                     if self.lambda_p>0.:
                         batch_loss += self.lambda_p*F.mse_loss(y, frame2)
                     

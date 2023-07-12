@@ -91,10 +91,10 @@ class AnimatingLandscape():
                 correspondence = initial_coordinate + flow
     
                 if old_correpondence is not None:
-                    correspondence = F.grid_sample(old_correpondence, correspondence.permute(0,2,3,1), padding_mode='border')
+                    correspondence = F.grid_sample(old_correpondence, correspondence.permute(0,2,3,1), padding_mode='border',align_corners=True)
     
                 correspondence_large = F.upsample(correspondence, size=(self.fh+scaled_pads[0]*2,self.fw+scaled_pads[1]*2), mode='bilinear', align_corners=True)
-                y_large = F.grid_sample(padded_test_input_large, correspondence_large.permute(0,2,3,1), padding_mode='border')
+                y_large = F.grid_sample(padded_test_input_large, correspondence_large.permute(0,2,3,1), padding_mode='border',align_corners=True)
                 outimg = y_large.data.cpu().numpy()[0].transpose(1,2,0)
                 outimg = denormalize(outimg)
                 outimg = outimg[scaled_pads[0]:outimg.shape[0]-scaled_pads[0],scaled_pads[1]:outimg.shape[1]-scaled_pads[1]]
@@ -111,7 +111,7 @@ class AnimatingLandscape():
                 outflowimg = cv2.resize(outflowimg,(self.fw,self.fh))
                 V_f.append(outflowimg)
                 
-                y = F.grid_sample(padded_test_input, correspondence.permute(0,2,3,1), padding_mode='border')
+                y = F.grid_sample(padded_test_input, correspondence.permute(0,2,3,1), padding_mode='border',align_corners=True)
                 test_input = y[:,:,self.pad:y.shape[2]-self.pad,self.pad:y.shape[3]-self.pad]
                 old_correpondence = correspondence
                 
