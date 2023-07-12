@@ -59,6 +59,9 @@ class AnimatingLandscape():
         with torch.no_grad():
             test_img_org = cv2.cvtColor(input_image,cv2.COLOR_RGB2BGR)
             fh, fw = test_img_org.shape[:2]
+            if test_img_org.shape[1]>768:
+                fh, fw = int(768*fh/fw), 768
+                test_img_org = cv2.resize(test_img_org, (fw, fh))
             test_img = cv2.resize(test_img_org, (self.w, self.h))
             test_input = np.array([normalize(test_img)])
             test_input = Variable(torch.from_numpy(test_input.transpose(0, 3, 1, 2)))
